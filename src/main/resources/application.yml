@@ -2,3 +2,19 @@ logging:
   level:
     root: INFO
     com.bol.assignment: DEBUG
+
+spring:
+  h2.console.enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: create-drop
+    properties.hibernate.dialect: org.hibernate.dialect.H2Dialect
+
+board:
+  pitsPerPlayer: 6
+  stonesPerPit: 6
