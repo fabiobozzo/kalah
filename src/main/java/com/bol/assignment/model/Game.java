@@ -2,6 +2,7 @@ package com.bol.assignment.model;
 
 import com.bol.assignment.exception.GameException;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +34,22 @@ public class Game {
     pitsP2[pitsPerPlayer] = 0;
   }
 
+  public String printPits(PlayerSide playerSide) {
+    if (playerSide.equals(PlayerSide.P1)) {
+      return Arrays.stream(pitsP1)
+          .boxed()
+          .map(String::valueOf)
+          .collect(Collectors.joining(","));
+    }
+    if (playerSide.equals(PlayerSide.P2)) {
+      return Arrays.stream(pitsP2)
+          .boxed()
+          .map(String::valueOf)
+          .collect(Collectors.joining(","));
+    }
+    return null;
+  }
+
   public synchronized boolean move(PlayerSide playerSide, Integer position) throws GameException {
 
     if (position < 0 || position > pitsPerPlayer - 1) {
@@ -57,14 +74,13 @@ public class Game {
 
     lastPosition = dropStones(ownPit, opponentPit, position);
 
-    applyCaptureRule(lastPosition, ownPit, opponentPit);
-
     return lastPosition != pitsPerPlayer;
   }
 
-  public synchronized int dropStones(int[] ownPit, int[] opponentPit, Integer position) throws GameException {
+  private synchronized int dropStones(int[] ownPit, int[] opponentPit, Integer position) throws GameException {
 
     int[] currentPit = ownPit;
+
     Integer stonesInPit = currentPit[position];
     if (stonesInPit == 0) {
       throw new GameException("An empty pit has been selected. Null move.");
@@ -91,10 +107,18 @@ public class Game {
       stonesInPit--;
     }
 
+    if (currentPit == ownPit) {
+      applyCaptureRule(lastPosition, ownPit, opponentPit);
+    }
+
     return lastPosition;
   }
 
-  public synchronized void applyCaptureRule(int lastPosition, int[] ownPit, int[] opponentPit) {
+  private synchronized void applyCaptureRule(int lastPosition, int[] ownPit, int[] opponentPit) {
+
+    log.info("ownPit: {}", Arrays.stream(ownPit).boxed().map(String::valueOf).collect(Collectors.joining(",")));
+    log.info("opponentPit: {}", Arrays.stream(opponentPit).boxed().map(String::valueOf).collect(Collectors.joining(",")));
+
     if (ownPit[lastPosition] == 1) {
       int oppositePosition = ownPit.length - 2 - lastPosition;
       ownPit[ownPit.length - 1] += 1 + opponentPit[oppositePosition];

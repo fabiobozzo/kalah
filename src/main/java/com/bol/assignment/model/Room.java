@@ -37,4 +37,15 @@ public class Room extends AbstractBaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "player_winner_id")
   private Player winner;
+
+  public Player getPlayerById(String playerId) {
+    if (playerId.equals(player1.getId())) {
+      return player1;
+    }
+    if (playerId.equals(player2.getId())) {
+      return player2;
+    }
+    return null;
+  }
+
 }

@@ -7,8 +7,9 @@ import com.bol.assignment.model.Player;
 import com.bol.assignment.model.PlayerSide;
 import com.bol.assignment.model.Room;
 import com.bol.assignment.model.RoomStatus;
-import com.bol.assignment.model.dto.GameDTO;
-import com.bol.assignment.model.dto.MoveDto;
+import com.bol.assignment.model.dto.GameMoveDto;
+import com.bol.assignment.model.dto.GameRetireDto;
+import com.bol.assignment.model.dto.GameStatusDTO;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,14 +24,11 @@ public class GameService {
   private final RoomService roomService;
   private final GamePool gamePool;
 
-  public GameDTO move(MoveDto move) throws GameException {
+  public GameStatusDTO move(GameMoveDto move) throws GameException {
 
     Room room = roomService.findRoomById(move.getRoomId());
 
-    if (
-        (room.getPlayerTurn().equals(PlayerSide.P1) && room.getPlayer1().getId().equals(move.getPlayerId())) ||
-            (room.getPlayerTurn().equals(PlayerSide.P2) && room.getPlayer2().getId().equals(move.getPlayerId()))
-    ) {
+    if (isPlayerInRoom(move.getPlayerId(), room) && room.getStatus().equals(RoomStatus.BUSY)) {
 
       Game game = gamePool.findOrCreateGameForRoom(room);
       boolean switchTurn = game.move(room.getPlayerTurn(), move.getPosition());
@@ -44,15 +42,38 @@ public class GameService {
         room.setPlayerTurn(room.getPlayerTurn().equals(PlayerSide.P1) ? PlayerSide.P2 : PlayerSide.P1);
       }
 
-      return GameDTO.builder()
-          .pits(IntStream.concat(Arrays.stream(game.getPitsP1()), Arrays.stream(game.getPitsP2()))
-              .boxed()
-              .collect(Collectors.toList()))
-          .winner(Optional.ofNullable(room.getWinner()).map(Player::getName).orElse(null))
-          .build();
+      return buildGameStatusWith(room, game);
 
     } else {
-      throw new GameException("It's not your turn!");
+      throw new GameException("Cannot perform this move right now! It's not your turn or the game is over.");
     }
+  }
+
+  public GameStatusDTO retire(GameRetireDto retire) throws GameException {
+
+    Room room = roomService.findRoomById(retire.getRoomId());
+
+    if (isPlayerInRoom(retire.getPlayerId(), room) && room.getStatus().equals(RoomStatus.BUSY)) {
+      Game game = gamePool.findOrCreateGameForRoom(room);
+      room.setStatus(RoomStatus.CLOSED);
+      room.setWinner(room.getPlayerById(retire.getPlayerId()));
+      return buildGameStatusWith(room, game);
+    } else {
+      throw new GameException("Cannot retire from this game.");
+    }
+  }
+
+  private GameStatusDTO buildGameStatusWith(Room room, Game game) {
+    return GameStatusDTO.builder()
+        .pits(IntStream.concat(Arrays.stream(game.getPitsP1()), Arrays.stream(game.getPitsP2()))
+            .boxed()
+            .collect(Collectors.toList()))
+        .winner(Optional.ofNullable(room.getWinner()).map(Player::getName).orElse(null))
+        .build();
+  }
+
+  private boolean isPlayerInRoom(String playerId, Room room) {
+    return (room.getPlayerTurn().equals(PlayerSide.P1) && room.getPlayer1().getId().equals(playerId)) ||
+        (room.getPlayerTurn().equals(PlayerSide.P2) && room.getPlayer2().getId().equals(playerId));
   }
 }

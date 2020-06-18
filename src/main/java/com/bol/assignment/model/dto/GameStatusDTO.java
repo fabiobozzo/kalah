@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
 @Data
 @Builder
 @ToString
-public class GameDTO {
+public class GameStatusDTO {
 
   private final List<Integer> pits;
   private final String winner;
