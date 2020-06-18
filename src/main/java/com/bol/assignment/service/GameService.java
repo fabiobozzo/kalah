@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class GameService {
   private final RoomService roomService;
   private final GamePool gamePool;
 
+  @Transactional
   public GameStatusDTO move(GameMoveDto move) throws GameException {
 
     Room room = roomService.findRoomById(move.getRoomId());
@@ -49,14 +51,15 @@ public class GameService {
     }
   }
 
+  @Transactional
   public GameStatusDTO retire(GameRetireDto retire) throws GameException {
 
     Room room = roomService.findRoomById(retire.getRoomId());
 
-    if (isPlayerInRoom(retire.getPlayerId(), room) && room.getStatus().equals(RoomStatus.BUSY)) {
+    if (room.getStatus().equals(RoomStatus.BUSY)) {
       Game game = gamePool.findOrCreateGameForRoom(room);
       room.setStatus(RoomStatus.CLOSED);
-      room.setWinner(room.getPlayerById(retire.getPlayerId()));
+      room.setWinner(room.getPlayerOpponentById(retire.getPlayerId()));
       return buildGameStatusWith(room, game);
     } else {
       throw new GameException("Cannot retire from this game.");

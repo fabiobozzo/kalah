@@ -1,7 +1,6 @@
 package com.bol.assignment.controller;
 
 import com.bol.assignment.model.Room;
-import com.bol.assignment.model.dto.RoomCloseDTO;
 import com.bol.assignment.model.dto.RoomCreateDTO;
 import com.bol.assignment.model.dto.RoomJoinDTO;
 import com.bol.assignment.service.GameService;
@@ -9,7 +8,6 @@ import com.bol.assignment.service.RoomService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -46,8 +44,4 @@ public class RoomController {
     return roomService.joinRoom(room);
   }
 
-  @DeleteMapping("room")
-  public void closeRoom(@RequestBody RoomCloseDTO room) {
-    roomService.closeRoom(room);
-  }
 }

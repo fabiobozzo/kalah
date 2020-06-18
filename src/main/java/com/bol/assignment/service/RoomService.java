@@ -44,18 +44,6 @@ public class RoomService {
     return roomRepository.save(room);
   }
 
-  @Transactional
-  public void closeRoom(RoomCloseDTO roomClose) {
-
-    validate(roomClose);
-
-    Room room = findRoomById(roomClose.getRoomId());
-    room.setStatus(RoomStatus.CLOSED);
-    room.setWinner(playerService.findById(roomClose.getPlayerId()));
-
-    roomRepository.save(room);
-  }
-
   public Room findRoomById(String roomId) {
     return roomRepository.findById(roomId)
         .orElseThrow(EntityNotFoundException.of("Room", "id", roomId));

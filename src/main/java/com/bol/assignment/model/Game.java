@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Data
 @AllArgsConstructor
 public class Game {
@@ -115,9 +114,6 @@ public class Game {
   }
 
   private synchronized void applyCaptureRule(int lastPosition, int[] ownPit, int[] opponentPit) {
-
-    log.info("ownPit: {}", Arrays.stream(ownPit).boxed().map(String::valueOf).collect(Collectors.joining(",")));
-    log.info("opponentPit: {}", Arrays.stream(opponentPit).boxed().map(String::valueOf).collect(Collectors.joining(",")));
 
     if (ownPit[lastPosition] == 1) {
       int oppositePosition = ownPit.length - 2 - lastPosition;
