@@ -24,4 +24,5 @@ public class Player extends AbstractBaseEntity {
   @Column(nullable = false, unique = true)
   private String email;
 
+
 }

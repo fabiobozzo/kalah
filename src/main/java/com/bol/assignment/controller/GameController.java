@@ -5,8 +5,10 @@ import com.bol.assignment.model.dto.GameMoveDto;
 import com.bol.assignment.model.dto.GameRetireDto;
 import com.bol.assignment.model.dto.GameStatusDTO;
 import com.bol.assignment.service.GameService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,24 +24,38 @@ public class GameController {
   private final SimpMessagingTemplate messagingTemplate;
   private final GameService gameService;
 
+  @Value("${stomp.destinationPrefix}")
+  private String stompDestinationPrefix;
+
+  @Value("${stomp.destination}")
+  private String stompDestination;
+
   @PostMapping("play")
   public void play(@RequestBody GameMoveDto move) {
+    GameStatusDTO game = null;
     try {
-      GameStatusDTO game = gameService.move(move);
-      messagingTemplate.convertAndSend("/game/status", game);
+      game = gameService.move(move);
     } catch (GameException e) {
-      messagingTemplate.convertAndSend("/game/status", GameStatusDTO.builder().errorMessage(e.getMessage()).build());
+      game = GameStatusDTO.builder().errorMessage(e.getMessage()).build();
+    } finally {
+      sendGameStatus(game);
+    }
+  }
+  
+  @PostMapping("retire")
+  public void retire(@RequestBody GameRetireDto retire) {
+    GameStatusDTO game = null;
+    try {
+      game = gameService.retire(retire);
+    } catch (GameException e) {
+      game = GameStatusDTO.builder().errorMessage(e.getMessage()).build();
+    } finally {
+      sendGameStatus(game);
     }
   }
 
-  @PostMapping("retire")
-  public void retire(@RequestBody GameRetireDto retire) {
-    try {
-      GameStatusDTO game = gameService.retire(retire);
-      messagingTemplate.convertAndSend("/game/status", game);
-    } catch (GameException e) {
-      messagingTemplate.convertAndSend("/game/status", GameStatusDTO.builder().errorMessage(e.getMessage()).build());
-    }
+  private void sendGameStatus(GameStatusDTO game) {
+    Optional.ofNullable(game).ifPresent(g -> messagingTemplate.convertAndSend(stompDestinationPrefix + stompDestination, g));
   }
 
 }

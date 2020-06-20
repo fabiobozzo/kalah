@@ -5,7 +5,6 @@ import com.bol.assignment.exception.EntityNotFoundException;
 import com.bol.assignment.exception.ValidationException;
 import com.bol.assignment.model.Room;
 import com.bol.assignment.model.RoomStatus;
-import com.bol.assignment.model.dto.RoomCloseDTO;
 import com.bol.assignment.model.dto.RoomCreateDTO;
 import com.bol.assignment.model.dto.RoomJoinDTO;
 import com.bol.assignment.repo.RoomRepository;
@@ -74,9 +73,4 @@ public class RoomService {
     }
   }
 
-  private void validate(RoomCloseDTO roomClose) {
-    if (!roomClose.isValid()) {
-      throw new ValidationException("Invalid Room:" + roomClose.toString());
-    }
-  }
 }
