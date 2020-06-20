@@ -1,0 +1,66 @@
+.board {
+  position: relative;
+  width:800px;
+  height:360px;
+  background-image: url('/assets/board.png');
+  .pit {
+    position: absolute;
+    width: 60px;
+    height: 80px;
+    font-size: 48px;
+    font-weight: bold;
+    text-align:center;
+    color: #000;
+    cursor: pointer;
+    &.pit-1 {
+      top: 215px;
+      &.pos-0 {
+        left: 155px;
+      }
+      &.pos-1 {
+        left: 245px;
+      }
+      &.pos-2 {
+        left: 330px;
+      }
+      &.pos-3 {
+        left: 415px;
+      }
+      &.pos-4 {
+        left: 500px;
+      }
+      &.pos-5 {
+        left: 585px;
+      }
+      &.pos-6 {
+        top: 140px;
+        left: 672px;
+      }
+    }
+    &.pit-2 {
+      top: 80px;
+      &.pos-6 {
+        top: 140px;
+        left: 70px;
+      }
+      &.pos-5 {
+        left: 160px;
+      }
+      &.pos-4 {
+        left: 245px;
+      }
+      &.pos-3 {
+        left: 330px;
+      }
+      &.pos-2 {
+        left: 415px;
+      }
+      &.pos-1 {
+        left: 500px;
+      }
+      &.pos-0 {
+        left: 587px;
+      }
+    }
+  }
+}
