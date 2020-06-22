@@ -24,14 +24,14 @@ public class GameController {
   private final SimpMessagingTemplate messagingTemplate;
   private final GameService gameService;
 
-  @Value("${stomp.destinationPrefix}")
-  private String stompDestinationPrefix;
-
   @Value("${stomp.destination}")
   private String stompDestination;
 
   @PostMapping("play")
   public void play(@RequestBody GameMoveDto move) {
+
+    log.debug(move.toString());
+
     GameStatusDTO game = null;
     try {
       game = gameService.move(move);
@@ -55,7 +55,7 @@ public class GameController {
   }
 
   private void sendGameStatus(GameStatusDTO game) {
-    Optional.ofNullable(game).ifPresent(g -> messagingTemplate.convertAndSend(stompDestinationPrefix + stompDestination, g));
+    Optional.ofNullable(game).ifPresent(g -> messagingTemplate.convertAndSend(stompDestination, g));
   }
 
 }

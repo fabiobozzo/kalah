@@ -1,1 +1,60 @@
-Lobby
+<div class="room-form row">
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text"
+           class="form-control"
+           id="name"
+           name="name"
+           placeholder="Your full Name"
+           required
+           #playerName/>
+    <label for="email">E-Mail:</label>
+    <input type="text"
+           class="form-control"
+           id="email"
+           name="email"
+           placeholder="Your E-mail address"
+           required
+           #playerEmail/>
+  </div>
+</div>
+<div class="new-room row">
+  <div class="form-group">
+    <label for="new-room-name">Create a New Room: </label>
+    <input type="text"
+           class="form-control"
+           id="new-room-name"
+           name="new-room-name"
+           placeholder="The room name"
+           #newRoomName/>
+    <button (click)="onCreateRoom(playerName, playerEmail, newRoomName)">
+      CREATE
+    </button>
+  </div>
+</div>
+<div class="rooms-list row">
+  <table class="rooms-table" *ngIf="rooms?.length">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Player</th>
+      <th>Creation date</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let room of rooms">
+      <td>{{ room.name }}</td>
+      <td>{{ room.status }}</td>
+      <td>{{ room.player1.name }}</td>
+      <td>{{ room.createdAt | date:'medium' }}</td>
+      <td>
+        <button (click)="onJoinRoom(playerName, playerEmail, room.id)">
+          JOIN
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

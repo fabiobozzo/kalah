@@ -9,11 +9,11 @@ import org.springframework.util.StringUtils;
 
 @Data
 @Builder
-@ToString
 public class GameStatusDTO {
 
   private final List<Integer> pits;
   private final String winner;
+  private final String currentPlayerId;
 
   private final String errorMessage;
 }

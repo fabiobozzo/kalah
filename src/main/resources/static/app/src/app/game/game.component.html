@@ -1,17 +1,20 @@
+<button (click)="onQuitGame()">
+  QUIT
+</button>
 <div class="board">
-  <div class="pit pit-1 pos-0">6</div>
-  <div class="pit pit-1 pos-1">6</div>
-  <div class="pit pit-1 pos-2">6</div>
-  <div class="pit pit-1 pos-3">6</div>
-  <div class="pit pit-1 pos-4">6</div>
-  <div class="pit pit-1 pos-5">6</div>
-  <div class="pit pit-1 pos-6">0</div>
+  <div class="pit pit-1 pos-0" (click)="onMove(0)">{{ pitsP1[0] }}</div>
+  <div class="pit pit-1 pos-1" (click)="onMove(1)">{{ pitsP1[1] }}</div>
+  <div class="pit pit-1 pos-2" (click)="onMove(2)">{{ pitsP1[2] }}</div>
+  <div class="pit pit-1 pos-3" (click)="onMove(3)">{{ pitsP1[3] }}</div>
+  <div class="pit pit-1 pos-4" (click)="onMove(4)">{{ pitsP1[4] }}</div>
+  <div class="pit pit-1 pos-5" (click)="onMove(5)">{{ pitsP1[5] }}</div>
+  <div class="pit pit-1 pos-6">{{ pitsP1[6] }}</div>
   <!--  -->
-  <div class="pit pit-2 pos-0">6</div>
-  <div class="pit pit-2 pos-1">6</div>
-  <div class="pit pit-2 pos-2">6</div>
-  <div class="pit pit-2 pos-3">6</div>
-  <div class="pit pit-2 pos-4">6</div>
-  <div class="pit pit-2 pos-5">6</div>
-  <div class="pit pit-2 pos-6">0</div>
+  <div class="pit pit-2 pos-0">{{ pitsP2[0] }}</div>
+  <div class="pit pit-2 pos-1">{{ pitsP2[1] }}</div>
+  <div class="pit pit-2 pos-2">{{ pitsP2[2] }}</div>
+  <div class="pit pit-2 pos-3">{{ pitsP2[3] }}</div>
+  <div class="pit pit-2 pos-4">{{ pitsP2[4] }}</div>
+  <div class="pit pit-2 pos-5">{{ pitsP2[5] }}</div>
+  <div class="pit pit-2 pos-6">{{ pitsP2[6] }}</div>
 </div>

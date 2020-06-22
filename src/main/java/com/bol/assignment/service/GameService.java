@@ -56,7 +56,7 @@ public class GameService {
 
     Room room = roomService.findRoomById(retire.getRoomId());
 
-    if (room.getStatus().equals(RoomStatus.BUSY)) {
+    if (room.getStatus().equals(RoomStatus.BUSY) || room.getStatus().equals(RoomStatus.OPEN)) {
       Game game = gamePool.findOrCreateGameForRoom(room);
       room.setStatus(RoomStatus.CLOSED);
       room.setWinner(room.getPlayerOpponentById(retire.getPlayerId()));
@@ -72,6 +72,7 @@ public class GameService {
             .boxed()
             .collect(Collectors.toList()))
         .winner(Optional.ofNullable(room.getWinner()).map(Player::getName).orElse(null))
+        .currentPlayerId(room.getPlayerTurn().equals(PlayerSide.P1) ? room.getPlayer1().getId() : room.getPlayer2().getId())
         .build();
   }
 

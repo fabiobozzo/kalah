@@ -19,6 +19,4 @@ board:
   pitsPerPlayer: 6
   stonesPerPit: 6
 
-stomp:
-  destinationPrefix: /game
-  destination: /status
+stomp.destination: /game
