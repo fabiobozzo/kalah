@@ -23,7 +23,7 @@ source: https://en.wikipedia.org/wiki/Kalah (_adapted to requirements_)
 
 To run the backend: 
 
-`mvn clean package && docker build --tag bieber-tweets:1.0.0 . && docker run -i -t -p 8000:8080 --name bieber-tweets bieber-tweets:1.0.0`
+`mvn clean package && docker build --tag bieber-tweets:1.0.0 . && docker run -i -t -p 8080:8080 --name bieber-tweets bieber-tweets:1.0.0`
 
 To run the frontend:
 
