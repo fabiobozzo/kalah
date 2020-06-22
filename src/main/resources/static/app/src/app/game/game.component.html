@@ -1,4 +1,4 @@
-<button (click)="onQuitGame()">
+<button (click)="onQuitGame()" *ngIf="!finished">
   QUIT
 </button>
 <div class="board">
@@ -17,4 +17,12 @@
   <div class="pit pit-2 pos-4">{{ pitsP2[4] }}</div>
   <div class="pit pit-2 pos-5">{{ pitsP2[5] }}</div>
   <div class="pit pit-2 pos-6">{{ pitsP2[6] }}</div>
+</div>
+<div class="status">
+  <div class="turn" *ngIf="!finished">
+    {{ ownTurn ? 'It\'s your turn. Click on a pit in the lower area to make your move!' : 'Please wait...' }}
+  </div>
+  <div class="game-over" *ngIf="finished">
+    {{ victory ? 'You won! Congratulations!' : 'You lose... better luck next time.' }}
+  </div>
 </div>

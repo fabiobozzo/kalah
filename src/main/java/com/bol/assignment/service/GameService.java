@@ -66,12 +66,18 @@ public class GameService {
     }
   }
 
+  public GameStatusDTO getStatus(String roomId) {
+    Room room = roomService.findRoomById(roomId);
+    Game game = gamePool.findOrCreateGameForRoom(room);
+    return buildGameStatusWith(room, game);
+  }
+
   private GameStatusDTO buildGameStatusWith(Room room, Game game) {
     return GameStatusDTO.builder()
         .pits(IntStream.concat(Arrays.stream(game.getPitsP1()), Arrays.stream(game.getPitsP2()))
             .boxed()
             .collect(Collectors.toList()))
-        .winner(Optional.ofNullable(room.getWinner()).map(Player::getName).orElse(null))
+        .winner(Optional.ofNullable(room.getWinner()).map(Player::getId).orElse(null))
         .currentPlayerId(room.getPlayerTurn().equals(PlayerSide.P1) ? room.getPlayer1().getId() : room.getPlayer2().getId())
         .build();
   }

@@ -129,7 +129,7 @@ public class GameServiceTest {
 
     assertNotNull(status);
     assertNotNull(status.getWinner());
-    assertEquals("Fabio", status.getWinner());
+    assertEquals(P1_ID, status.getWinner());
     assertNull(status.getErrorMessage());
     assertEquals(List.of(0, 0, 0, 0, 0, 0, 36, 6, 6, 6, 6, 6, 6, 0), status.getPits());
     assertEquals(RoomStatus.CLOSED, room.getStatus());
@@ -156,7 +156,7 @@ public class GameServiceTest {
 
     GameStatusDTO status = testee.retire(new GameRetireDto(ROOM_ID, P1_ID));
     assertNotNull(status);
-    assertEquals("Foo Bar", status.getWinner());
+    assertEquals(P2_ID, status.getWinner());
     assertNull(status.getErrorMessage());
     assertEquals(List.of(6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0), status.getPits());
     assertEquals(RoomStatus.CLOSED, room.getStatus());

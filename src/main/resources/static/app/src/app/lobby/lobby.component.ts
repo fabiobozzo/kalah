@@ -54,9 +54,7 @@ export class LobbyComponent implements OnInit {
     );
 
     this.roomService.create(room).subscribe(result => {
-      this.gameService.setOwnTurn(true);
-      this.gameService.setGameStarted(false);
-      this.gameService.setGameInfo(result.id, result.player1.id);
+      this.gameService.setGameInfo(result.id, result.player1.id, 1);
       this.gotoGame();
     });
   }
@@ -85,9 +83,7 @@ export class LobbyComponent implements OnInit {
     );
 
     this.roomService.join(room).subscribe(result => {
-      this.gameService.setOwnTurn(false);
-      this.gameService.setGameStarted(true);
-      this.gameService.setGameInfo(result.id, result.player2.id);
+      this.gameService.setGameInfo(result.id, result.player2.id, 2);
       this.gotoGame();
     });
   }
