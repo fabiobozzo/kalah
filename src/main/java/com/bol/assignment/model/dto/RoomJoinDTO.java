@@ -1,11 +1,13 @@
 package com.bol.assignment.model.dto;
 
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.util.StringUtils;
 
 @Data
+@AllArgsConstructor
 @ToString
 public class RoomJoinDTO {
 
